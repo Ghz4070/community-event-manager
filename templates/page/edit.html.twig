@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit {{ page.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Edit Page</h1>
+        </div>
+    </div>
+
+    {{ include('page/_form.html.twig', {'button_label': 'Update', 'method_value': 'PUT'}) }}
+
+    <script>
+        document.querySelector("input[type=file]").addEventListener('change', function (element) {
+            let target = element.target;
+
+            const value = target.value.replace("C:\\fakepath\\", "");
+            if (value !== undefined || value !== '') {
+                document.querySelector(".custom-file-label").dataset.content = value;
+                document.querySelector(".custom-file-label").textContent = value;
+            }
+        });
+    </script>
+{% endblock %}

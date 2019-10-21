@@ -1,0 +1,23 @@
+language: php
+
+env:
+    global:
+        - DOCKER_COMPOSE_VERSION=1.23.2
+php:
+    - 7.3
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+before_script:
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    - make install
+
+script:
+    - docker-compose run composer vendor/phpmd/phpmd/src/bin/phpmd src text phpmd.xml
+    - docker-compose run composer bin/phpunit
+    - docker-compose exec php vendor/bin/behat --format progress --strict

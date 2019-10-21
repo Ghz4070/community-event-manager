@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Special Sponsorship{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Create new Special Sponsorship</h1>
+        </div>
+    </div>
+
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    <div class="row">
+        <div class="col-12">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-5">
+            <a href="{{ path('special_benefit_index') }}" class="btn btn-light">Back to list</a>
+        </div>
+        <div class="col-7 text-right">
+            <button type="submit" class="btn btn-success">Add</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

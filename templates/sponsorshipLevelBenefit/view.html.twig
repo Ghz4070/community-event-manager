@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sponsorships Summary{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-6 text-center text-sm-left">
+            <h2>Sponsorships Summary</h2>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-sm-6 text-center text-sm-right">
+                <a class="btn btn-warning" href="{{ path('sponsorship_level_benefit_edit') }}">Edit</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12 table-responsive-sm">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Benefits</th>
+                    {% for level in levels %}
+                        <th>{{ level.label }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for levelBenefit in levelBenefits %}
+                    <tr>
+                        <td>{{ levelBenefit.benefit.label }}</td>
+                        {% for level in levelBenefit.levels %}
+                            <td>
+                                {% if level.isChecked %}
+                                    {% if level.text is not null %}
+                                        {{ level.text }}
+                                    {% else %}
+                                        <i class="fa fa-check"></i>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Price</th>
+                    {% for level in levels %}
+                        <td>{{ level.price|localizedcurrency(currency) }}</td>
+                    {% endfor %}
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+{% endblock %}

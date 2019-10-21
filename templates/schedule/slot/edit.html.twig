@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Edit {{ slot.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Edit Slot</h1>
+        </div>
+    </div>
+
+    {{ form_start(form, {'action': path('schedule_slot_edit', {'id': slot.id})}) }}
+    <div class="row">
+        <div class="col-12">
+            {{ form_row(form.space) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.start) }}
+            {{ form_row(form.end) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a class="btn btn-secondary text-left" href="{{ path('schedule_index') }}">Back to Schedule</a>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-primary pull-right">Save Slot</button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+

@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Schedule{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Configure Schedule</h1>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            {% if schedules is empty %}
+                <div class="alert alert-danger">
+                    There's no day yet
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            {% for key,day in schedules %}
+                                <li class="nav-item">
+                                    <a class="nav-link {{ (key == 0) ? 'active show' : '' }}" id="day-{{ key }}-tab"
+                                       data-toggle="tab" href="#day-{{ key }}" role="tab" aria-controls="day-{{ key }}"
+                                       aria-selected="false">
+                                        {{ day.day.format('d/m/Y') }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item">
+                                    <a href="" class="nav-link" data-toggle="modal" data-target="#modalAddDay">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+                        <div class="tab-content">
+                            {% for key,day in schedules %}
+                                <div class="tab-pane {{ (key == 0) ? 'active show' : '' }}" id="day-{{ key }}"
+                                     role="tabpanel" aria-labelledby="day-{{ key }}-tab">
+                                    {{ include('schedule/configure/_day.html.twig', { 'day': day }) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="row mt-3">
+            <div class="col-12 text-right">
+                <a href="#" data-toggle="modal" data-target="#modalAddDay" class="btn btn-outline-primary">Add day</a>
+                {% if schedules|length > 0 %}
+                    <a href="#" data-toggle="modal" data-target="#modalAddSpace" class="btn btn-outline-primary">Add
+                        space</a>
+                    <a href="#" data-toggle="modal" data-target="#modalAddSlot" class="btn btn-outline-primary">Add
+                        Slot</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {{ include('schedule/modal/_add_day.html.twig', { 'form': formSchedule }) }}
+        {{ include('schedule/modal/_add_space.html.twig', { 'form': formSpace }) }}
+        {{ include('schedule/modal/_add_slot.html.twig', { 'form': formSlot }) }}
+    {% endif %}
+
+{% endblock %}
